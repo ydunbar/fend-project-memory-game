@@ -28,6 +28,11 @@ let cards = [
  *   - add each card's HTML to the page
  */
 
+ // Function that returns HTML for card
+function createCard(card) {
+  return `<li class="card" data-card="${card}"><i class="fa ${card}"></i></li>`;
+}
+
 // Shuffle function from http://stackoverflow.com/a/2450976
 function shuffle(array) {
     var currentIndex = array.length, temporaryValue, randomIndex;
@@ -43,6 +48,16 @@ function shuffle(array) {
     return array;
 }
 
+// Start game; adds shuffled result of createCard into innerHTML of deck, adding cards programmatically
+function startGame() {
+  var deck = document.querySelector('.deck');
+  var cardHTML = shuffle(cards).map(function(card) {
+    return createCard(card);
+  });
+  deck.innerHTML = cardHTML.join('');
+}
+
+startGame();
 
 /*
  * set up the event listener for a card. If a card is clicked:
