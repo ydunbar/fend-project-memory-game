@@ -1,3 +1,6 @@
+
+// With help from tutorial by Mike Wales: https://www.youtube.com/watch?reload=9&reload=9&v=_rUH-sEs68Y&app=desktop
+
 /*
  * Create a list that holds all of your cards
  */
