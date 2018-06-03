@@ -73,20 +73,36 @@ startGame();
  //allCards variable and openCards and matchCards array
 let allCards = document.querySelectorAll('.card');
 let openCards = [];
+let matchCards = [];
+
+//Function that compares card data and adds open and show classes, adds to openCards array, then clears openCards array
+function matchCheck() {
+  if(openCards[0].dataset.card == openCards[1].dataset.card) {
+    openCards[0].classList.add('match', 'open', 'show');
+    openCards[1].classList.add('match', 'open', 'show');
+    matchCards.push(openCards[0]);
+    matchCards.push(openCards[1]);
+    openCards = [];
+  }
+  // If not a match, hide and clear openCards array
+  else {
+    setTimeout(function() {
+    openCards.forEach(function(card) {
+      card.classList.remove('open', 'show');
+    });
+    openCards = [];
+  },800);}
+}
 
  // Adds event listener to each card, toggles classes, hides cards after 2 are opened using timer
 allCards.forEach(function(card) {
   card.addEventListener('click', function(e) {
     if(!card.classList.contains('open') && !card.classList.contains('show') && !card.classList.contains('match') && openCards.length < 2) {
-      openCards.push(card);
+    	openCards.push(card);
       card.classList.add('open', 'show');
       if(openCards.length == 2) {
-      	setTimeout(function() {
-      		openCards.forEach(function(card) {
-      			card.classList.remove('open', 'show');
-      		});
-      		openCards = [];
-      	},800);}
+        matchCheck ();
       }
+    }
   });
 });
