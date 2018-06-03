@@ -5,7 +5,7 @@
  * Create a list that holds all of your cards
  */
 
-let cards = [
+const cards = [
   "fa-diamond",
   "fa-diamond",
   "fa-paper-plane-o",
@@ -74,17 +74,35 @@ startGame();
  */
 
  // Variables and arrays
-let allCards = document.querySelectorAll('.card');
+const allCards = document.querySelectorAll('.card');
 let openCards = [];
 let matchCards = [];
-let moveCounter = document.querySelector('.moves');
+const moveCounter = document.querySelector('.moves');
 let moves = 0;
 moveCounter.innerHTML = moves;
+const stars = document.querySelector('.stars').children;
+let starCount = 3;
 
-// Moves counter
+// Add to move counter
 function addMove() {
 	moves++;
 	moveCounter.innerHTML = moves;
+
+	// setting rates based on moves
+    if (moves > 8 && moves < 12){
+        for( i= 0; i < 3; i++){
+            if(i > 1){
+                stars[i].style.visibility = "collapse";
+            }
+        }
+    }
+    else if (moves > 13){
+        for( i= 0; i < 3; i++){
+            if(i > 0){
+                stars[i].style.visibility = "collapse";
+            }
+        }
+    }
 }
 
 //Function that compares card data and adds open, show and match classes, adds to matchCards array, then clears openCards array
