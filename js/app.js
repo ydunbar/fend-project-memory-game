@@ -73,12 +73,21 @@ startGame();
  *    + if all cards have matched, display a message with the final score (put this functionality in another function that you call from this one)
  */
 
- //allCards variable and openCards and matchCards array
+ // Variables and arrays
 let allCards = document.querySelectorAll('.card');
 let openCards = [];
 let matchCards = [];
+let moveCounter = document.querySelector('.moves');
+let moves = 0;
+moveCounter.innerHTML = moves;
 
-//Function that compares card data and adds open and show classes, adds to openCards array, then clears openCards array
+// Moves counter
+function addMove() {
+	moves++;
+	moveCounter.innerHTML = moves;
+}
+
+//Function that compares card data and adds open, show and match classes, adds to matchCards array, then clears openCards array
 function matchCheck() {
   if(openCards[0].dataset.card == openCards[1].dataset.card) {
     openCards[0].classList.add('match', 'open', 'show');
@@ -97,14 +106,15 @@ function matchCheck() {
   },800);}
 }
 
- // Adds event listener to each card, toggles classes, hides cards after 2 are opened using timer
+ // Adds event listener to each card, toggles classes, calls matchCheck
 allCards.forEach(function(card) {
   card.addEventListener('click', function(e) {
     if(!card.classList.contains('open') && !card.classList.contains('show') && !card.classList.contains('match') && openCards.length < 2) {
     	openCards.push(card);
       card.classList.add('open', 'show');
       if(openCards.length == 2) {
-        matchCheck ();
+        matchCheck();
+        addMove();
       }
     }
   });
