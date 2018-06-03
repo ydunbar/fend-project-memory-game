@@ -69,3 +69,24 @@ startGame();
  *    + increment the move counter and display it on the page (put this functionality in another function that you call from this one)
  *    + if all cards have matched, display a message with the final score (put this functionality in another function that you call from this one)
  */
+
+ //allCards variable and openCards and matchCards array
+let allCards = document.querySelectorAll('.card');
+let openCards = [];
+
+ // Adds event listener to each card, toggles classes, hides cards after 2 are opened using timer
+allCards.forEach(function(card) {
+  card.addEventListener('click', function(e) {
+    if(!card.classList.contains('open') && !card.classList.contains('show') && !card.classList.contains('match') && openCards.length < 2) {
+      openCards.push(card);
+      card.classList.add('open', 'show');
+      if(openCards.length == 2) {
+      	setTimeout(function() {
+      		openCards.forEach(function(card) {
+      			card.classList.remove('open', 'show');
+      		});
+      		openCards = [];
+      	},800);}
+      }
+  });
+});
