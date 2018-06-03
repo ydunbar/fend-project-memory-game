@@ -1,5 +1,6 @@
 
 // With help from tutorial by Mike Wales: https://www.youtube.com/watch?reload=9&reload=9&v=_rUH-sEs68Y&app=desktop
+// and tutorial by Sandra Israel-Ovirih: https://scotch.io/tutorials/how-to-build-a-memory-matching-game-in-javascript
 
 /*
  * Create a list that holds all of your cards
@@ -77,6 +78,12 @@ startGame();
 const allCards = document.querySelectorAll('.card');
 let openCards = [];
 let matchCards = [];
+// Timer variables
+let second = 0;
+let minute = 0;
+const timer = document.querySelector(".timer");
+var interval;
+// move counter and star rating variables
 const moveCounter = document.querySelector('.moves');
 let moves = 0;
 moveCounter.innerHTML = moves;
@@ -87,8 +94,14 @@ let starCount = 3;
 function addMove() {
 	moves++;
 	moveCounter.innerHTML = moves;
-
-	// setting rates based on moves
+	// start timer
+    if(moves == 1){
+        second = 0;
+        minute = 0; 
+        hour = 0;
+        startTimer();
+    }
+	// Star rating based on moves
     if (moves > 8 && moves < 12){
         for( i= 0; i < 3; i++){
             if(i > 1){
@@ -104,6 +117,23 @@ function addMove() {
         }
     }
 }
+
+// Timer
+function startTimer(){
+    interval = setInterval(function(){
+        timer.innerHTML = `<i class='fa fa-clock-o'></i> ${minute}:${second}`;
+        second++;
+        if(second == 60){
+            minute++;
+            second=0;
+        }
+        if(minute == 60){
+            hour++;
+            minute = 0;
+        }
+    },1000);
+}
+
 
 //Function that compares card data and adds open, show and match classes, adds to matchCards array, then clears openCards array
 function matchCheck() {
