@@ -25,22 +25,6 @@ const cards = [
   "fa-bicycle"
 ];
 
-// Variables and arrays
-const allCards = document.querySelectorAll('.card');
-let openCards = [];
-let matchCards = [];
-// Timer variables
-let second = 0;
-let minute = 0;
-const timer = document.querySelector(".timer");
-var interval;
-// move counter and star rating variables
-const moveCounter = document.querySelector('.moves');
-let moves = 0;
-moveCounter.innerHTML = moves;
-const stars = document.querySelector('.stars').children;
-let starCount = 3;
-
 /*
  * Display the cards on the page
  *   - shuffle the list of cards using the provided "shuffle" method below
@@ -90,11 +74,28 @@ startGame();
  *    + if all cards have matched, display a message with the final score (put this functionality in another function that you call from this one)
  */
 
+ // Variables and arrays
+const allCards = document.querySelectorAll('.card');
+let openCards = [];
+let matchCards = [];
+// Timer variables
+let second = 0;
+let minute = 0;
+const timer = document.querySelector('.timer');
+var interval;
+// move counter and star rating variables
+const moveCounter = document.querySelector('.moves');
+let moves = 0;
+moveCounter.innerHTML = moves;
+const stars = document.querySelector('.stars').children;
+let starCount = 3;
+const modal = document.querySelector('.modal');
+
 // Add to move counter
 function addMove() {
 	moves++;
 	moveCounter.innerHTML = moves;
-	// start timer
+	//start timer on first click
     if(moves == 1){
         second = 0;
         minute = 0; 
@@ -105,14 +106,14 @@ function addMove() {
     if (moves > 8 && moves < 12){
         for( i= 0; i < 3; i++){
             if(i > 1){
-                stars[i].style.visibility = "collapse";
+                stars[i].style.visibility = 'collapse';
             }
         }
     }
     else if (moves > 13){
         for( i= 0; i < 3; i++){
             if(i > 0){
-                stars[i].style.visibility = "collapse";
+                stars[i].style.visibility = 'collapse';
             }
         }
     }
@@ -121,7 +122,7 @@ function addMove() {
 // Timer
 function startTimer(){
     interval = setInterval(function(){
-        timer.innerHTML = `<i class='fa fa-clock-o'></i> ${minute}:${second}`;
+        timer.innerHTML = minute+'mins '+second+'secs';
         second++;
         if(second == 60){
             minute++;
@@ -133,7 +134,6 @@ function startTimer(){
         }
     },1000);
 }
-
 
 //Function that compares card data and adds open, show and match classes, adds to matchCards array, then clears openCards array
 function matchCheck() {
@@ -154,6 +154,18 @@ function matchCheck() {
   },800);}
 }
 
+function youWin() {
+	if (matchCards.length === 2) {
+		//stop timer
+		clearInterval(interval);
+		// Show modal with time and star rating - buggy
+		modal.style.display = "block";
+		modal.span.onclick = function() {
+			modal.style.display = "none";
+		}
+	}
+}
+
  // Adds event listener to each card, toggles classes, calls matchCheck
 allCards.forEach(function(card) {
   card.addEventListener('click', function(e) {
@@ -163,7 +175,9 @@ allCards.forEach(function(card) {
       if(openCards.length == 2) {
         matchCheck();
         addMove();
+        youWin();
       }
     }
   });
 });
+
