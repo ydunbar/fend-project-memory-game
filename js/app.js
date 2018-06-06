@@ -25,6 +25,22 @@ const cards = [
   "fa-bicycle"
 ];
 
+// Variables and arrays
+const allCards = document.querySelectorAll('.card');
+let openCards = [];
+let matchCards = [];
+// Timer variables
+let second = 0;
+let minute = 0;
+const timer = document.querySelector(".timer");
+var interval;
+// move counter and star rating variables
+const moveCounter = document.querySelector('.moves');
+let moves = 0;
+moveCounter.innerHTML = moves;
+const stars = document.querySelector('.stars').children;
+let starCount = 3;
+
 /*
  * Display the cards on the page
  *   - shuffle the list of cards using the provided "shuffle" method below
@@ -73,22 +89,6 @@ startGame();
  *    + increment the move counter and display it on the page (put this functionality in another function that you call from this one)
  *    + if all cards have matched, display a message with the final score (put this functionality in another function that you call from this one)
  */
-
- // Variables and arrays
-const allCards = document.querySelectorAll('.card');
-let openCards = [];
-let matchCards = [];
-// Timer variables
-let second = 0;
-let minute = 0;
-const timer = document.querySelector(".timer");
-var interval;
-// move counter and star rating variables
-const moveCounter = document.querySelector('.moves');
-let moves = 0;
-moveCounter.innerHTML = moves;
-const stars = document.querySelector('.stars').children;
-let starCount = 3;
 
 // Add to move counter
 function addMove() {
