@@ -83,13 +83,18 @@ let second = 0;
 let minute = 0;
 const timer = document.querySelector('.timer');
 var interval;
-// move counter and star rating variables
+// Move counter and star rating variables
 const moveCounter = document.querySelector('.moves');
 let moves = 0;
 moveCounter.innerHTML = moves;
 const stars = document.querySelector('.stars').children;
 let starCount = 3;
+// Modal
 const modal = document.querySelector('.modal');
+const closeButton = document.querySelector('.close');
+const totalMoves = document.querySelector('.totalMoves');
+const totalTime = document.querySelector('.totalTime');
+const starRating = document.querySelector('.starRating');
 
 // Add to move counter
 function addMove() {
@@ -103,16 +108,16 @@ function addMove() {
         startTimer();
     }
 	// Star rating based on moves
-    if (moves > 8 && moves < 12){
-        for( i= 0; i < 3; i++){
-            if(i > 1){
+    if (moves > 8 && moves < 12) {
+        for ( i= 0; i < 3; i++) {
+            if (i > 1) {
                 stars[i].style.visibility = 'collapse';
             }
         }
     }
-    else if (moves > 13){
-        for( i= 0; i < 3; i++){
-            if(i > 0){
+    else if (moves > 13) {
+        for ( i= 0; i < 3; i++) {
+            if (i > 0) {
                 stars[i].style.visibility = 'collapse';
             }
         }
@@ -120,15 +125,15 @@ function addMove() {
 }
 
 // Timer
-function startTimer(){
-    interval = setInterval(function(){
-        timer.innerHTML = minute+'mins '+second+'secs';
+function startTimer() {
+    interval = setInterval(function() {
+        timer.innerHTML = minute + 'mins ' + second + 'secs';
         second++;
-        if(second == 60){
+        if (second == 60) {
             minute++;
-            second=0;
+            second = 0;
         }
-        if(minute == 60){
+        if (minute == 60) {
             hour++;
             minute = 0;
         }
@@ -137,7 +142,7 @@ function startTimer(){
 
 //Function that compares card data and adds open, show and match classes, adds to matchCards array, then clears openCards array
 function matchCheck() {
-  if(openCards[0].dataset.card == openCards[1].dataset.card) {
+  if (openCards[0].dataset.card == openCards[1].dataset.card) {
     openCards[0].classList.add('match', 'open', 'show');
     openCards[1].classList.add('match', 'open', 'show');
     matchCards.push(openCards[0]);
@@ -158,21 +163,24 @@ function youWin() {
 	if (matchCards.length === 2) {
 		//stop timer
 		clearInterval(interval);
-		// Show modal with time and star rating - buggy
+		// Show modal with time and star rating
 		modal.style.display = "block";
-		modal.span.onclick = function() {
+		starRating.innerHTML = starCount + 'stars';
+		totalMoves.innerHTML = moves + 'moves';
+		totalTime.innerHTML = timer.innerHTML;
+		closeButton.addEventListener('click', function(e) {
 			modal.style.display = "none";
-		}
+		});
 	}
 }
 
  // Adds event listener to each card, toggles classes, calls matchCheck
 allCards.forEach(function(card) {
   card.addEventListener('click', function(e) {
-    if(!card.classList.contains('open') && !card.classList.contains('show') && !card.classList.contains('match') && openCards.length < 2) {
+    if (!card.classList.contains('open') && !card.classList.contains('show') && !card.classList.contains('match') && openCards.length < 2) {
     	openCards.push(card);
       card.classList.add('open', 'show');
-      if(openCards.length == 2) {
+      if (openCards.length == 2) {
         matchCheck();
         addMove();
         youWin();
