@@ -101,7 +101,7 @@ function addMove() {
 	moves++;
 	moveCounter.innerHTML = moves;
 	//start timer on first click
-    if(moves == 1){
+    if(moves == 1) {
         second = 0;
         minute = 0; 
         hour = 0;
@@ -112,6 +112,7 @@ function addMove() {
         for ( i= 0; i < 3; i++) {
             if (i > 1) {
                 stars[i].style.visibility = 'collapse';
+                starCount = 2;
             }
         }
     }
@@ -119,6 +120,7 @@ function addMove() {
         for ( i= 0; i < 3; i++) {
             if (i > 0) {
                 stars[i].style.visibility = 'collapse';
+                starCount = 1;
             }
         }
     }
@@ -165,7 +167,7 @@ function youWin() {
 		clearInterval(interval);
 		// Show modal with time and star rating
 		modal.style.display = "block";
-		starRating.innerHTML = starCount + 'stars';
+		starRating.innerHTML = '<i class="fa fa-star"></i>' + ' x' + starCount;
 		totalMoves.innerHTML = moves + 'moves';
 		totalTime.innerHTML = timer.innerHTML;
 		closeButton.addEventListener('click', function(e) {
