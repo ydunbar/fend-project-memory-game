@@ -54,14 +54,14 @@ function shuffle(array) {
 
 // Start game; adds shuffled result of createCard into innerHTML of deck, adding cards programmatically
 function startGame() {
-  var deck = document.querySelector('.deck');
-  var cardHTML = shuffle(cards).map(function(card) {
+	var deck = document.querySelector('.deck');
+	var cardHTML = shuffle(cards).map(function(card) {
     return createCard(card);
-  });
+});
   deck.innerHTML = cardHTML.join('');
 }
 
-startGame();
+document.body.onload = startGame();
 
 /*
  * set up the event listener for a card. If a card is clicked:
@@ -95,6 +95,8 @@ const closeButton = document.querySelector('.close');
 const totalMoves = document.querySelector('.totalMoves');
 const totalTime = document.querySelector('.totalTime');
 const starRating = document.querySelector('.starRating');
+// Restart
+restartButton = document.querySelector('.restart');
 
 // Add to move counter
 function addMove() {
@@ -191,3 +193,12 @@ allCards.forEach(function(card) {
   });
 });
 
+// Restart button
+restartButton.addEventListener('click', function(e) {
+	restart();
+});
+
+// Restart function
+function restart() {
+	location.reload();
+}
