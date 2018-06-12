@@ -32,11 +32,6 @@ const cards = [
  *   - add each card's HTML to the page
  */
 
- // Function that returns HTML for card
-function createCard(card) {
-  return `<li class="card" data-card="${card}"><i class="fa ${card}"></i></li>`;
-}
-
 // Shuffle function from http://stackoverflow.com/a/2450976
 function shuffle(array) {
     var currentIndex = array.length, temporaryValue, randomIndex;
@@ -52,16 +47,21 @@ function shuffle(array) {
     return array;
 }
 
+ // Function that returns HTML for card
+function createCard(card) {
+  return `<li class="card" data-card="${card}"><i class="fa ${card}"></i></li>`;
+}
+
 // Start game; adds shuffled result of createCard into innerHTML of deck, adding cards programmatically
 function startGame() {
 	var deck = document.querySelector('.deck');
 	var cardHTML = shuffle(cards).map(function(card) {
-    return createCard(card);
-});
-  deck.innerHTML = cardHTML.join('');
+		return createCard(card);
+	});
+	deck.innerHTML = cardHTML.join('');
 }
 
-document.body.onload = startGame();
+startGame();
 
 /*
  * set up the event listener for a card. If a card is clicked:
@@ -97,6 +97,30 @@ const totalTime = document.querySelector('.totalTime');
 const starRating = document.querySelector('.starRating');
 // Restart
 restartButton = document.querySelector('.restart');
+
+// Restart button
+restartButton.addEventListener('click', function() {
+	restart();
+});
+
+//Function that compares card data and adds open, show and match classes, adds to matchCards array, then clears openCards array
+function matchCheck() {
+  if (openCards[0].dataset.card == openCards[1].dataset.card) {
+    openCards[0].classList.add('match', 'open', 'show');
+    openCards[1].classList.add('match', 'open', 'show');
+    matchCards.push(openCards[0]);
+    matchCards.push(openCards[1]);
+    openCards = [];
+  }
+  // If not a match, hide and clear openCards array
+  else {
+    setTimeout(function() {
+    openCards.forEach(function(card) {
+      card.classList.remove('open', 'show');
+    });
+    openCards = [];
+  },800);}
+}
 
 // Add to move counter
 function addMove() {
@@ -144,43 +168,9 @@ function startTimer() {
     },1000);
 }
 
-//Function that compares card data and adds open, show and match classes, adds to matchCards array, then clears openCards array
-function matchCheck() {
-  if (openCards[0].dataset.card == openCards[1].dataset.card) {
-    openCards[0].classList.add('match', 'open', 'show');
-    openCards[1].classList.add('match', 'open', 'show');
-    matchCards.push(openCards[0]);
-    matchCards.push(openCards[1]);
-    openCards = [];
-  }
-  // If not a match, hide and clear openCards array
-  else {
-    setTimeout(function() {
-    openCards.forEach(function(card) {
-      card.classList.remove('open', 'show');
-    });
-    openCards = [];
-  },800);}
-}
-
-function youWin() {
-	if (matchCards.length === 2) {
-		//stop timer
-		clearInterval(interval);
-		// Show modal with time and star rating
-		modal.style.display = "block";
-		starRating.innerHTML = '<i class="fa fa-star"></i>' + ' x' + starCount;
-		totalMoves.innerHTML = moves + 'moves';
-		totalTime.innerHTML = timer.innerHTML;
-		closeButton.addEventListener('click', function(e) {
-			modal.style.display = "none";
-		});
-	}
-}
-
  // Adds event listener to each card, toggles classes, calls matchCheck
 allCards.forEach(function(card) {
-  card.addEventListener('click', function(e) {
+  card.addEventListener('click', function() {
     if (!card.classList.contains('open') && !card.classList.contains('show') && !card.classList.contains('match') && openCards.length < 2) {
     	openCards.push(card);
       card.classList.add('open', 'show');
@@ -193,10 +183,20 @@ allCards.forEach(function(card) {
   });
 });
 
-// Restart button
-restartButton.addEventListener('click', function(e) {
-	restart();
-});
+function youWin() {
+	if (matchCards.length === 16) {
+		//stop timer
+		clearInterval(interval);
+		// Show modal with time and star rating
+		modal.style.display = "block";
+		starRating.innerHTML = '<i class="fa fa-star"></i>' + ' x' + starCount;
+		totalMoves.innerHTML = moves + 'moves';
+		totalTime.innerHTML = timer.innerHTML;
+		closeButton.addEventListener('click', function(e) {
+			modal.style.display = "none";
+		});
+	}
+}
 
 // Restart function
 function restart() {
